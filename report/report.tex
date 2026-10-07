@@ -66,7 +66,6 @@ Video demo: & \todo{link video}\\
 
 % ------------------------------------------------------------------ 2
 \section{Giới thiệu bài toán}
-\verify{đoạn này được viết ở ngôi thứ nhất theo yêu cầu của bạn; sửa lại nếu lý do thật của bạn khác}
 
 \textbf{Lý do chọn.} Bài tập Lab\#02 trên Wecode của lớp thuộc chủ đề Quy hoạch động (Dynamic Programming), trong đó có bài ``Rút bài trúng thưởng'' là một bài khoảng cách chỉnh sửa với $n,m\le 5000$. Khi cần chọn bài cho bài tập lớn, tôi nhờ trợ lý AI so sánh ba ứng viên là Edit Distance, Knapsack 0/1 và LIS, rồi chọn theo đề xuất của trợ lý là Edit Distance. Lý do được nêu: bảng quy hoạch động của nó là bảng 2 chiều, mỗi ô chỉ phụ thuộc ba ô lân cận nên rất hợp để trực quan hóa từng bước, và có thêm phần truy vết để ra dãy thao tác cụ thể. Tôi cũng không chọn hai bài mà cô đã nêu tên trong thông báo (LCS và nhân chuỗi ma trận).
 
@@ -181,7 +180,6 @@ return dp[n][m]
 Mã giả này trùng với panel ``Mã giả'' trên demo (\code{src/pseudocode.js}): mỗi bước của demo tô sáng đúng các dòng đang thực hiện, và tương ứng này được kiểm thử tự động (mục \ref{sec:tn}).
 
 \subsection{Tính đúng đắn}
-\verify{phần chứng minh do trợ lý AI soạn; hãy đọc kỹ và chắc là tự giải thích được, vì cô có thể hỏi}
 
 Gọi $d(i,j)$ là số thao tác ít nhất (thêm, xóa, thay) để biến $A[1..i]$ thành $B[1..j]$. Chứng minh gồm hai phần: (a) $d(i,j)$ bằng chi phí nhỏ nhất của một \emph{phép gióng hàng} (alignment), (b) $dp[i][j]$ bằng chi phí nhỏ nhất đó, bằng quy nạp theo $i+j$.
 
@@ -393,7 +391,6 @@ $n=m$ & Đệ quy thuần & Có nhớ & Bảng DP & Hai hàng & C (cả process)
 
 % ------------------------------------------------------------------ 8
 \section{Quy trình thực hiện với AI}\label{sec:ai}
-\verify{mục này được viết ở ngôi thứ nhất theo yêu cầu của bạn. Hãy đọc từng dòng, chỉ giữ những gì đúng với việc bạn đã làm, và chắc là bạn giải thích được mọi chỗ. Cô hỏi ``thuật toán tự thiết kế hay AI đưa ra'', nên mục 8.2 phải đúng sự thật.}
 
 \subsection{Công cụ}
 \begin{itemize}[nosep]
