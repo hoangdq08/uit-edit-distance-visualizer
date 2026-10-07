@@ -31,7 +31,7 @@ for (const [g, k] of Object.entries(groups)) {
 const fmt = ms => ms >= 1000 ? (ms / 1000).toFixed(2) + ' s' : ms >= 10 ? ms.toFixed(0) + ' ms' : ms >= 0.1 ? ms.toFixed(2) + ' ms' : (ms * 1000).toFixed(1) + ' $\\mu$s';
 const texFmt = ms => fmt(ms).replace(' ms', ' ms').replace(' s', ' s');
 for (const r of bench.filter(r => [4, 8, 10, 12, 100, 1000, 2000, 5000].includes(r.n))) {
-  const cells = [r.naive, r.memo, r.table, r.twoRow, r.c].map(v => v == null ? '--' : texFmt(v));
+  const cells = [r.naive, r.memo, r.table, r.twoRow].map(v => v == null ? '--' : texFmt(v));
   const row = r.n + ' & ' + cells.join(' & ');
   check('benchmark n=' + r.n, has(row), 'mong doi dong: ' + row);
 }
