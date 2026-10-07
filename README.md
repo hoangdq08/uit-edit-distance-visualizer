@@ -51,8 +51,8 @@ node tools/benchmark.js          # ~10 giây
 `tools/dom_check.html` nạp `index.html`, gọi `window.__demo.go(s)` cho từng bước rồi kiểm tra DOM thật: ô đang tính (đúng ô, đúng giá trị), số ô nguồn (1 khi trùng, 3 khi khác), dòng mã giả đang sáng (đọc chữ thật của dòng, không dùng lại hàm ánh xạ), đường truy vết, danh sách thao tác, kết quả không lộ trước khi truy vết xong (cả ở khung Kết quả lẫn khung giải thích), nút Lùi/Tiến bị khóa đúng ở đầu/cuối, và báo lỗi khi nhập quá 20 ký tự. Kiểm chứng bằng đột biến: `bash tools/mutation_check.sh` chèn 5 lỗi cố ý vào bản sao (ánh xạ nhánh trùng sai, ánh xạ thao tác xóa sai, lộ kết quả sớm, giá trị ô sai, lộ đáp án qua khung giải thích), cả 5 đều báo FAIL, bản gốc báo PASS.
 
 `run_tests.js` kiểm tra mỗi testcase theo 4 cách:
-1. Bốn cài đặt JS (bảng, 2 hàng, memo, đệ quy thuần khi đủ nhỏ) cho đúng đáp án.
-2. Bản C cho đúng đáp án trên cùng input.
+1. Bảng DP và 2 hàng chạy trên mọi testcase; memo chỉ khi n·m ≤ 4 triệu (tránh tràn ngăn xếp) và đệ quy thuần chỉ khi n+m ≤ 14. Tất cả cho đúng đáp án.
+2. Bản C cho đúng đáp án trên cùng input (bỏ qua, có thông báo, nếu không có gcc).
 3. Truy vết: số thao tác khác "giữ" bằng khoảng cách, và áp dụng các thao tác lên A thì ra đúng B.
 4. Đối xứng: d(A,B) = d(B,A).
 5. Ánh xạ mã giả: với mọi bước của mọi testcase cỡ demo (≤ 20 ký tự), dòng được tô sáng khớp nhánh `if/else` và loại thao tác truy vết tương ứng.

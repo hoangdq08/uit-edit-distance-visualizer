@@ -183,11 +183,15 @@ Mã giả này trùng với panel ``Mã giả'' trên demo (\code{src/pseudocode
 \subsection{Tính đúng đắn}
 \verify{phần chứng minh do trợ lý AI soạn; hãy đọc kỹ và chắc là tự giải thích được, vì cô có thể hỏi}
 
-Gọi $d(i,j)$ là số thao tác ít nhất để biến $A[1..i]$ thành $B[1..j]$. Cần chứng minh $dp[i][j]=d(i,j)$ bằng quy nạp theo $i+j$.
+Gọi $d(i,j)$ là số thao tác ít nhất (thêm, xóa, thay) để biến $A[1..i]$ thành $B[1..j]$. Chứng minh gồm hai phần: (a) $d(i,j)$ bằng chi phí nhỏ nhất của một \emph{phép gióng hàng} (alignment), (b) $dp[i][j]$ bằng chi phí nhỏ nhất đó, bằng quy nạp theo $i+j$.
 
-\textbf{Cơ sở.} Nếu $i=0$, phải tạo ra $j$ ký tự từ chuỗi rỗng. Mỗi thao tác thêm đúng một ký tự nên cần ít nhất $j$ thao tác và $j$ thao tác là đủ, vậy $d(0,j)=j$. Tương tự $d(i,0)=i$.
+\textbf{Phép gióng hàng.} Một phép gióng $A[1..i]$ với $B[1..j]$ là một tập các cặp $(p,q)$ ghép ký tự $A[p]$ với $B[q]$ sao cho các cặp không bắt chéo nhau (nếu $(p,q)$ và $(p',q')$ cùng thuộc tập và $p<p'$ thì $q<q'$). Ký tự của $A$ không được ghép bị \emph{xóa}, ký tự của $B$ không được ghép là ký tự \emph{thêm vào}. Chi phí của phép gióng là số ký tự bị xóa, cộng số ký tự thêm vào, cộng số cặp ghép có hai ký tự khác nhau.
 
-\textbf{Bước quy nạp ($i,j>0$).} Một dãy thao tác biến $A[1..i]$ thành $B[1..j]$ có thể được biểu diễn như một \emph{phép gióng hàng} (alignment): mỗi ký tự của $A$ hoặc bị xóa hoặc được ghép với một ký tự của $B$ (giữ nếu bằng nhau, thay nếu khác), mỗi ký tự của $B$ không được ghép thì là ký tự được thêm, và các cặp ghép không bắt chéo nhau. Việc xóa rồi thêm cùng một vị trí không bao giờ rẻ hơn một phép thay, nên một dãy tối ưu luôn có thể chuẩn hóa thành dạng gióng hàng này mà không tăng số thao tác (đây là cách trình bày ở \cite{wagner}). Với phép gióng hàng đó, xét cặp cuối $(A[i],B[j])$. Chỉ có ba khả năng loại trừ nhau theo vị trí của hai ký tự cuối trong phép gióng:
+\textbf{(a) Dãy thao tác và phép gióng có cùng chi phí tối thiểu.} Từ một phép gióng ta dựng được dãy thao tác có đúng chi phí đó (xóa các ký tự không ghép, thay các cặp khác nhau, thêm các ký tự còn thiếu). Ngược lại, lấy một dãy thao tác bất kỳ gồm $k$ thao tác và theo dõi số phận từng ký tự: các thao tác không đổi thứ tự tương đối của những ký tự gốc của $A$ còn sống sót đến cuối, nên ghép mỗi ký tự gốc còn sống với ký tự mà nó trở thành trong $B$ cho một tập cặp không bắt chéo. Mỗi ký tự gốc bị xóa tốn ít nhất 1 thao tác; mỗi ký tự của $B$ không xuất phát từ ký tự gốc nào được thêm vào nên tốn ít nhất 1 thao tác; mỗi ký tự gốc còn sống mà khác ký tự đích đã bị thay ít nhất một lần nên tốn ít nhất 1 thao tác; còn một ký tự được thêm rồi bị xóa lại tốn ít nhất 2 thao tác mà không tạo ra chi phí nào trong phép gióng. Cộng lại, chi phí của phép gióng thu được không vượt quá $k$. Vậy $d(i,j)$ chính là chi phí nhỏ nhất của một phép gióng (đây cũng là cách Wagner và Fischer trình bày \cite{wagner}).
+
+\textbf{(b) Cơ sở và công thức truy hồi.} Nếu $i=0$, phải tạo ra $j$ ký tự từ chuỗi rỗng. Mỗi thao tác thêm đúng một ký tự nên cần ít nhất $j$ thao tác và $j$ thao tác là đủ, vậy $d(0,j)=j$. Tương tự $d(i,0)=i$.
+
+Với $i,j>0$, xét một phép gióng tối ưu của $A[1..i]$ với $B[1..j]$ và cặp ký tự cuối $(A[i],B[j])$. Chỉ có ba khả năng loại trừ nhau:
 \begin{enumerate}[nosep]
   \item $B[j]$ không được ghép với ký tự nào của $A$ (là ký tự \emph{thêm vào}): phần còn lại là một phép gióng $A[1..i]$ với $B[1..j-1]$, tổn phí $1+d(i,j-1)$.
   \item $A[i]$ không được ghép với ký tự nào của $B$ (bị \emph{xóa}): phần còn lại gióng $A[1..i-1]$ với $B[1..j]$, tổn phí $1+d(i-1,j)$.
@@ -313,7 +317,7 @@ Nhập Input & Hai ô nhập, danh sách ví dụ, nút nạp chuỗi, thông b�
 Điền ô & Tô ô đang tính, gắn nhãn mũi tên cho ba ô nguồn, viền đậm ô được chọn, khung giải thích có công thức với số cụ thể, ô chưa tính để trống. & Khi chỉ dựa vào màu thì khó phân biệt nguồn; thêm nhãn chữ và mũi tên trên ô (việc này càng cần ở bảng 20$\times$20 nơi ô nhỏ).\\
 Truy vết & Vẽ đường đi ngược, danh sách thao tác lộ dần theo từng bước, chuỗi sau mỗi thao tác có tô ký tự vừa đổi. Thứ tự ưu tiên khi nhiều đường cùng tối ưu: giữ/thay, xóa, thêm. & ---\\
 Output & Ở cả hai chỗ hiển thị đáp án (khung Kết quả và lời giải thích bước đầu của truy vết), đáp án bị ẩn cho đến khi truy vết xong để người xem tự theo dõi được. & Reviewer GPT-6-sol phát hiện đáp án vẫn lộ ở câu ``đây là kết quả: $d$'' của bước truy vết đầu, dù khung Kết quả đã ẩn; bộ kiểm tra DOM cũng chỉ nhìn khung Kết quả nên bỏ sót. Đã xoá câu đó và thêm kiểm tra cho khung giải thích.\\
-Kiểm thử & Sinh 31 testcase với đáp án từ cài đặt Python độc lập, chạy bốn cài đặt JavaScript và bản C, kiểm tra truy vết, ánh xạ mã giả, DOM trên Chrome, đột biến. & Benchmark treo 5 phút vì đệ quy thuần chạy tới $n=20$; chỉ chạy tới $n=12$. Một đột biến lọt qua (mục 6.3).\\
+Kiểm thử & Sinh 31 testcase với đáp án từ cài đặt Python độc lập, chạy các cài đặt JavaScript (có giới hạn kích thước cho đệ quy) và bản C, kiểm tra truy vết, ánh xạ mã giả, DOM trên Chrome, đột biến. & Benchmark treo 5 phút vì đệ quy thuần chạy tới $n=20$; chỉ chạy tới $n=12$. Một đột biến lọt qua (mục 6.3).\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -342,8 +346,8 @@ Demo giao diện chỉ nhận tối đa 20 ký tự để bảng đọc được
 \subsection{Cách kiểm tra mỗi testcase}
 \texttt{node tools/run\_tests.js} kiểm tra, với mỗi testcase:
 \begin{enumerate}[nosep]
-  \item Bốn cài đặt JavaScript (bảng, hai hàng, đệ quy có nhớ, đệ quy thuần khi đủ nhỏ) đều cho đúng đáp án.
-  \item Bản C cho đúng đáp án trên cùng input.
+  \item Cài đặt bảng DP và hai hàng chạy trên \emph{mọi} testcase; đệ quy có nhớ chỉ chạy khi $nm\le 4\,000\,000$ (để không tràn ngăn xếp) và đệ quy thuần chỉ chạy khi $n+m\le 14$ (vì quá chậm). Tất cả đều phải cho đúng đáp án.
+  \item Bản C cho đúng đáp án trên cùng input (bước này bị bỏ qua, có thông báo, nếu máy không có \code{gcc}).
   \item Truy vết: số thao tác khác ``giữ'' bằng $d$, và áp dụng các thao tác lên $A$ thì ra đúng $B$.
   \item Đối xứng: $d(A,B)=d(B,A)$.
   \item Ánh xạ mã giả: với mọi bước demo của các cặp cỡ demo, dòng được tô sáng đúng nhánh \code{if/else} và đúng loại thao tác (1377 bước).
@@ -351,7 +355,7 @@ Demo giao diện chỉ nhận tối đa 20 ký tự để bảng đọc được
 Kiểm tra giao diện thật trong trình duyệt: \code{tools/dom\_check.html} chạy trên Chrome headless, đi hết mọi bước của 14 cặp chuỗi (772 bước) và kiểm tra DOM sau mỗi bước (ô đang tính và giá trị, số ô nguồn, dòng mã giả đang sáng, đường truy vết, kết quả không lộ trước khi truy vết xong, trạng thái nút Lùi/Tiến).
 
 \subsection{Kiểm chứng chính bộ kiểm thử}
-Để biết bộ kiểm thử có thật sự bắt lỗi, bốn lỗi cố ý được chèn vào mã giao diện rồi chạy lại: ánh xạ sai nhánh ``trùng'', ánh xạ sai dòng của thao tác ``xóa'', lộ kết quả sớm, hiện sai giá trị ô. Cả bốn đều bị báo FAIL, bản gốc báo PASS. Quá trình này không suôn sẻ ngay lần đầu: bộ lọc output của lệnh chạy bị sai nên lần chạy đầu không in ra kết quả nào, và sau khi sửa bộ lọc thì một đột biến (ánh xạ sai nhánh ``trùng'') vẫn báo PASS vì kiểm tra chỉ so với chính hàm ánh xạ. Cả hai nguyên nhân được ghi ở mục \ref{sec:ai}.
+Để biết bộ kiểm thử có thật sự bắt lỗi, năm lỗi cố ý được chèn vào bản sao của mã giao diện rồi chạy lại (\code{bash tools/mutation\_check.sh}): ánh xạ sai nhánh ``trùng'', ánh xạ sai dòng của thao tác ``xóa'', lộ kết quả sớm, hiện sai giá trị ô, và lộ đáp án qua khung giải thích (lỗi thứ năm do reviewer phát hiện, mục \ref{sec:ai}). Cả năm đều bị báo FAIL, bản gốc báo PASS. Trong lần chạy đầu chỉ có bốn lỗi đầu. Quá trình này không suôn sẻ ngay lần đầu: bộ lọc output của lệnh chạy bị sai nên lần chạy đầu không in ra kết quả nào, và sau khi sửa bộ lọc thì một đột biến (ánh xạ sai nhánh ``trùng'') vẫn báo PASS vì kiểm tra chỉ so với chính hàm ánh xạ. Cả hai nguyên nhân được ghi ở mục \ref{sec:ai}.
 
 % ------------------------------------------------------------------ 7
 \section{Đánh giá}
@@ -456,7 +460,7 @@ Các lỗi sau xảy ra thật trong quá trình làm (lỗi 8 và 9 là lỗi c
 
 % ------------------------------------------------------------------ 9
 \section{Kết luận}
-Bài tập lớn trực quan hóa thuật toán khoảng cách chỉnh sửa bằng quy hoạch động $O(nm)$: demo web từng bước (khởi tạo, điền bảng, truy vết) kèm mã giả tô sáng dòng đang chạy, bộ 31 testcase với đáp án tính độc lập, và benchmark so bốn cách cài đặt. Cả 31 testcase đạt, kiểm tra giao diện trên Chrome đạt 772 bước và kiểm tra bằng đột biến bắt được cả 4 lỗi chèn vào. Đệ quy thuần tăng xấp xỉ $5.83^n$ và không dùng được quá $n\approx 12$, trong khi quy hoạch động chạy $n=m=5000$ trong 87 ms (bảng đầy đủ). Hạn chế chính là demo chỉ nhận 20 ký tự và khung Kết quả bị đẩy xuống dưới với bảng lớn.
+Bài tập lớn trực quan hóa thuật toán khoảng cách chỉnh sửa bằng quy hoạch động $O(nm)$: demo web từng bước (khởi tạo, điền bảng, truy vết) kèm mã giả tô sáng dòng đang chạy, bộ 31 testcase với đáp án tính độc lập, và benchmark so bốn cách cài đặt. Cả 31 testcase đạt, kiểm tra giao diện trên Chrome đạt 772 bước và kiểm tra bằng đột biến bắt được cả 5 lỗi chèn vào. Đệ quy thuần tăng xấp xỉ $5.83^n$ và không dùng được quá $n\approx 12$, trong khi quy hoạch động chạy $n=m=5000$ trong 87 ms (bảng đầy đủ). Hạn chế chính là demo chỉ nhận 20 ký tự và khung Kết quả bị đẩy xuống dưới với bảng lớn.
 
 \begin{thebibliography}{9}
 \bibitem{levenshtein} V. I. Levenshtein, ``Binary codes capable of correcting deletions, insertions and reversals'', \emph{Soviet Physics Doklady}, 10(8), 707--710, 1966.
