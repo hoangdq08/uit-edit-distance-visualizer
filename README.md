@@ -67,5 +67,5 @@ Nhóm testcase: `de-bai` (4), `bien` (6), `dac-biet` (8), `thuong` (5), `lon` (3
 - Demo chỉ nhận tối đa 20 ký tự mỗi chuỗi (để bảng đọc được). Thuật toán chạy tới 5000 ký tự.
 - Truy vết chọn một đường đi tối ưu theo thứ tự ưu tiên giữ/thay, xóa, thêm. Có thể có nhiều đường
   cùng số thao tác, khi đó demo chỉ hiển thị một đường.
-- `memo` là đệ quy sâu n+m nên có thể tràn stack với chuỗi rất dài (xem `benchmark.js`, n = 5000 vẫn chạy được trên Node 26 ở máy này).
-- Đã kiểm tra giao diện thủ công trên Firefox và tự động trên Chrome 154 headless (DOM check ở trên). Chưa thử Safari, và chưa kiểm tra bố cục (chỉ kiểm tra nội dung DOM, không kiểm tra hình ảnh).
+- `memo` là đệ quy sâu n+m nên có thể tràn stack với chuỗi rất dài.
+- Giao diện được kiểm tra tự động trên Chrome headless (DOM check ở trên), chỉ kiểm tra nội dung DOM, không kiểm tra hình ảnh.
