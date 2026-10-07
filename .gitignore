@@ -5,3 +5,5 @@ tools/.edit_distance_c
 report/*.log
 report/*.aux
 report/*.pdf
+# Video demo sinh ra boi tools/make_video.py (nop rieng, khong commit)
+video/
