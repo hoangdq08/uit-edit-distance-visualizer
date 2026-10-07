@@ -3,7 +3,7 @@
  * Chay toan bo testcase va in bang ket qua.
  * Kiem tra:
  *   1. Moi cai dat JS (DP bang, 2 hang, memo, de quy thuan khi du nho) == expected (tinh doc lap bang Python).
- *   2. Ban C da nop len Wecode (src/edit_distance.c) cho cung ket qua tren file .in.
+ *   2. Ban C giai bai Wecode (src/edit_distance.c) cho cung ket qua tren file .in.
  *   3. Tinh chat cua truy vet: so thao tac khong-giu == khoang cach; ap dung thao tac len A
  *      thi ra dung B (kiem chung duong di, khong chi con so).
  *   4. Doi xung: d(A,B) == d(B,A).

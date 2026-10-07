@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /*
- * Benchmark 4 cach cai dat edit distance (JS) + ban C da nop Wecode.
+ * Benchmark 4 cach cai dat edit distance (JS) + ban C giai bai Wecode.
  *   naive : de quy thuan, khong nho            ~ O(3^(n+m)) (Delannoy), chi chay duoc chuoi rat ngan
  *   memo  : de quy co nho (top-down)           O(n*m) thoi gian, O(n*m) bo nho, de quy sau n+m
  *   table : DP bang day du (bottom-up)         O(n*m) thoi gian, O(n*m) bo nho
  *   2row  : DP chi giu 2 hang                  O(n*m) thoi gian, O(m) bo nho
- *   C     : ban nop Wecode (2 hang, -O2), do ca thoi gian khoi dong tien trinh
+ *   C     : ban C giai bai Wecode (2 hang, -O2), do ca thoi gian khoi dong tien trinh
  * Do: trung vi cua nhieu lan chay (sau khi khoi dong lai JIT). Moi o co time-limit rieng de khong treo.
  * Cach dung: node tools/benchmark.js [--quick]
  */

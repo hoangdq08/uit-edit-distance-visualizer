@@ -1,3 +1,7 @@
 # Binary sinh ra khi chay tools/run_tests.js va tools/benchmark.js
 tools/.edit_distance_c
 .DS_Store
+# Build output cua report (bien dich lai bang: tectonic report/report.tex)
+report/*.log
+report/*.aux
+report/*.pdf

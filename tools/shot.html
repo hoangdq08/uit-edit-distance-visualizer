@@ -1,0 +1,16 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#fff">
+<script>
+// Trang chup anh minh hoa cho report. Tham so: ?w=&h=&a=&b=&step=  (step = chi so buoc; "end" = buoc cuoi)
+// Dung: chrome --headless=new --allow-file-access-from-files --window-size=W,H --screenshot=out.png "file:///.../tools/shot.html?w=W&h=H&a=LOVE&b=MOVIE&step=4"
+var q = new URLSearchParams(location.search);
+var W = +q.get('w'), H = +q.get('h');
+var f = document.createElement('iframe');
+f.style.cssText = 'width:' + W + 'px;height:' + H + 'px;border:0;position:absolute;top:0;left:0';
+f.src = '../index.html'; document.body.appendChild(f);
+f.onload = function () { setTimeout(function () {
+  var demo = f.contentWindow.__demo;
+  demo.load(q.get('a'), q.get('b'));
+  var s = q.get('step'); s = (s === 'end') ? demo.model.steps.length - 1 : +s;
+  demo.go(s);
+}, 300); };
+</script></body></html>
