@@ -66,13 +66,13 @@ Video demo: & \todo{link video}\\
 
 % ------------------------------------------------------------------ 2
 \section{Giới thiệu bài toán}
-\verify{đoạn này soạn từ nhật ký làm việc; sửa lại nếu lý do thật của bạn khác}
+\verify{đoạn này được viết ở ngôi thứ nhất theo yêu cầu của bạn; sửa lại nếu lý do thật của bạn khác}
 
-\textbf{Lý do chọn.} Bài tập Lab\#02 trên Wecode của lớp thuộc chủ đề Quy hoạch động (Dynamic Programming). Trong lúc làm các bài của Lab này, bài ``Rút bài trúng thưởng'' là một bài khoảng cách chỉnh sửa với $n,m\le 5000$. Khi cần chọn bài cho bài tập lớn, ba ứng viên được so sánh là Edit Distance, Knapsack 0/1 và LIS. Edit Distance được chọn vì bảng quy hoạch động của nó là bảng 2 chiều, mỗi ô phụ thuộc đúng ba ô lân cận nên rất hợp để trực quan hóa từng bước, và có thêm phần truy vết để ra dãy thao tác cụ thể. Hai bài mà cô đã nêu tên trong thông báo (LCS và nhân chuỗi ma trận) cố ý không chọn.
+\textbf{Lý do chọn.} Bài tập Lab\#02 trên Wecode của lớp thuộc chủ đề Quy hoạch động (Dynamic Programming), trong đó có bài ``Rút bài trúng thưởng'' là một bài khoảng cách chỉnh sửa với $n,m\le 5000$. Khi cần chọn bài cho bài tập lớn, tôi nhờ trợ lý AI so sánh ba ứng viên là Edit Distance, Knapsack 0/1 và LIS, rồi chọn theo đề xuất của trợ lý là Edit Distance. Lý do được nêu: bảng quy hoạch động của nó là bảng 2 chiều, mỗi ô chỉ phụ thuộc ba ô lân cận nên rất hợp để trực quan hóa từng bước, và có thêm phần truy vết để ra dãy thao tác cụ thể. Tôi cũng không chọn hai bài mà cô đã nêu tên trong thông báo (LCS và nhân chuỗi ma trận).
 
 \textbf{Nguồn gốc và ứng dụng.} Khoảng cách này do Levenshtein đưa ra năm 1966 cho mã sửa lỗi \cite{levenshtein}, và cách tính bằng quy hoạch động được trình bày bởi Wagner và Fischer năm 1974 \cite{wagner}. Các ứng dụng quen thuộc: gợi ý sửa lỗi chính tả, các công cụ so sánh tệp (\code{diff}), so khớp chuỗi DNA (dạng tổng quát có trọng số là bài toán gióng hàng chuỗi), và hậu xử lý văn bản sau nhận dạng ký tự.
 
-\textbf{Bài Wecode.} \todo{Ghi bạn đã nộp bài ``Rút bài trúng thưởng'' trên Wecode chưa và kết quả (AC hay không). Báo cáo này không khẳng định điều đó.} Bản C trong \code{src/edit\_distance.c} (hai hàng, $O(m)$ bộ nhớ) được dùng làm một cài đặt đối chứng trong bộ kiểm thử.
+\textbf{Bài Wecode.} \todo{Điền: tôi đã nộp bài ``Rút bài trúng thưởng'' trên Wecode chưa và kết quả (AC hay không). Báo cáo này không khẳng định điều đó.} Bản C trong \code{src/edit\_distance.c} (hai hàng, $O(m)$ bộ nhớ) được dùng làm một cài đặt đối chứng trong bộ kiểm thử.
 
 % ------------------------------------------------------------------ 3
 \section{Mô hình bài toán}
@@ -275,19 +275,17 @@ E & 4 & 4 & 3 & 2 & 2 & \textbf{2}\\
 \end{figure}
 
 \subsection{Tường thuật quá trình thiết kế giao diện và chức năng}
-\verify{soạn từ nhật ký thật; sửa cho đúng ý và lý do của bạn}
+Giao diện được làm lặp qua nhiều vòng, theo yêu cầu của tôi và phản hồi của trợ lý AI cùng hai reviewer. Các quyết định chính và lý do:
 
-Giao diện được làm lặp qua nhiều vòng. Các quyết định chính và lý do:
+\textbf{Bảng 2 chiều tô màu, không dùng 3D.} Tôi hỏi trợ lý có nên dùng kỹ năng dựng 3D để trực quan hóa không. Sau khi trợ lý đánh giá, tôi quyết định bỏ 3D: bảng DP vốn là dữ liệu 2 chiều, chiều thứ ba không thêm thông tin, làm khó đọc số trong ô, ảnh chụp xoay góc nhìn không nhất quán giữa các bước nên khó đối chiếu với report, và tốn thời gian ở phần cô chấm ít hơn (thiết kế thuật toán, tường thuật quá trình).
 
-\textbf{Bảng 2 chiều tô màu, không dùng 3D.} Có cân nhắc dùng kỹ năng dựng 3D để trực quan hóa. Kết luận là bỏ: bảng DP vốn là dữ liệu 2 chiều, chiều thứ ba không thêm thông tin, làm khó đọc số trong ô, ảnh chụp xoay góc nhìn không nhất quán giữa các bước nên khó đối chiếu với report, và tốn thời gian ở phần cô chấm ít hơn (thiết kế thuật toán, tường thuật quá trình).
+\textbf{Web một thư mục, không làm ứng dụng riêng.} Tôi hỏi có nên viết thành ứng dụng chạy riêng thay vì web, và chọn giữ web theo đề xuất của trợ lý: người chấm chỉ cần mở \code{index.html}, còn ứng dụng đóng gói phải build riêng cho từng hệ điều hành và nặng hơn hàng chục MB.
 
-\textbf{Web một thư mục, không làm ứng dụng riêng.} Người chấm chỉ cần mở \code{index.html}. Ứng dụng đóng gói sẽ phải build riêng cho từng hệ điều hành và nặng hơn hàng chục MB.
+\textbf{Màu không phải kênh thông tin duy nhất.} Trợ lý đề xuất giữ nền sáng và không dùng emoji để ảnh chụp đưa vào báo cáo và in ra vẫn đọc được, tôi đồng ý. Ba loại nguồn có nhãn chữ và ký hiệu mũi tên ($\nwarrow\uparrow\leftarrow$) cùng với màu.
 
-\textbf{Màu không phải kênh thông tin duy nhất.} Ba loại nguồn có nhãn chữ và ký hiệu mũi tên ($\nwarrow\uparrow\leftarrow$) cùng với màu, nền sáng để in và chụp báo cáo vẫn đọc được, không dùng emoji.
+\textbf{Học cấu trúc từ bài của một bạn cùng lớp.} Tôi đưa mã nguồn và báo cáo bài tham khảo của một bạn cùng lớp và nói rằng giao diện của bài đó đẹp. Trợ lý đọc bài đó chỉ để học \emph{cấu trúc}: có panel mã giả với dòng đang chạy được tô sáng, có khung Input/Output ghi tên biến và giới hạn, và có nhật ký lỗi AI \emph{có thật}. Tôi chọn làm panel mã giả và khung ``Mô hình bài toán''; không sao chép mã hay văn bản vì bài toán và thuật toán khác. Nền sáng được giữ thay vì nền tối của bài đó vì ảnh chụp nền tối khó đọc khi in.
 
-\textbf{Học cấu trúc từ bài của một bạn cùng lớp.} Đã đọc mã nguồn và báo cáo của một bài tham khảo của một bạn cùng lớp chỉ để học \emph{cấu trúc}: có panel mã giả với dòng đang chạy được tô sáng, có khung Input/Output ghi tên biến và giới hạn, và có nhật ký lỗi AI \emph{có thật}. Không sao chép mã hay văn bản, vì bài toán và thuật toán khác. Từ đó thêm panel mã giả và khung ``Mô hình bài toán''. Giữ nền sáng thay vì nền tối của bài đó, vì ảnh chụp nền tối khó đọc khi in.
-
-\textbf{Review bố cục và bài học từ số đo.} Sau khi thêm mã giả, trang cao 1557~px: ở màn hình 1440$\times$900 và 1680$\times$1050, panel mã giả nằm dưới bảng nên người xem phải cuộn mới thấy dòng đang sáng. Một worker (Claude Opus 5.5) được giao sắp xếp lại bố cục, đo bằng Chrome headless. Số đo độc lập (phần trăm diện tích nằm trong màn hình, ở bước truy vết giữa chừng):
+\textbf{Review bố cục và bài học từ số đo.} Sau khi thêm mã giả, trang cao 1557~px: ở màn hình 1440$\times$900 và 1680$\times$1050, panel mã giả nằm dưới bảng nên người xem phải cuộn mới thấy dòng đang sáng. Tôi yêu cầu mở một worker (Claude Opus 5.5) sắp xếp lại bố cục bằng kỹ năng thiết kế giao diện, và bố cục được đo bằng Chrome headless. Số đo độc lập (phần trăm diện tích nằm trong màn hình, ở bước truy vết giữa chừng):
 \begin{center}
 \small
 \begin{tabular}{@{}llrr@{}}
@@ -302,22 +300,22 @@ Màn hình & Cặp chuỗi & Mã giả (trước) & Mã giả (sau)\\
 \bottomrule
 \end{tabular}
 \end{center}
-Cách làm: mã giả chuyển sang cột phải dưới khung ``Bước hiện tại'', khung nhập chuyển lên cùng hàng tiêu đề, và kích thước ô bảng tự co theo số hàng và cột. Chi phí: bảng 20$\times$20 chỉ còn ô khoảng 28~px ở 1440~px, và khung Kết quả nằm dưới bảng nên ở bảng này nằm ngoài màn hình đầu. Một model khác họ (GPT-6-sol) được dùng làm reviewer độc lập, chỉ đọc. Nó chỉ ra dòng ngữ cảnh của mã giả quá nhạt (tương phản 1.11:1, đã sửa lên vạch 5.30:1) và nút ``Chạy'' dễ nhầm với ``Tự chạy'' (đã đổi thành ``Nạp chuỗi''). Hai mục còn lại chưa sửa, ghi ở phần hạn chế.
+Cách làm: mã giả chuyển sang cột phải dưới khung ``Bước hiện tại'', khung nhập chuyển lên cùng hàng tiêu đề, và kích thước ô bảng tự co theo số hàng và cột. Chi phí: bảng 20$\times$20 chỉ còn ô khoảng 28~px ở 1440~px, và khung Kết quả nằm dưới bảng nên ở bảng này nằm ngoài màn hình đầu. Tôi hỏi có cần dùng GPT để đánh giá lại không và chọn chạy: một model khác họ (GPT-6-sol) làm reviewer độc lập, chỉ đọc. Nó chỉ ra dòng ngữ cảnh của mã giả quá nhạt (tương phản 1.11:1, đã sửa lên vạch 5.30:1) và nút ``Chạy'' dễ nhầm với ``Tự chạy''. Tôi chọn sửa hai điểm đó (nút đã đổi thành ``Nạp chuỗi''). Các mục còn lại của reviewer chưa sửa, ghi ở phần hạn chế.
 
-\textbf{Quá trình xây từng chức năng.} Bảng dưới đây ghi từng chức năng được xây thế nào, gặp vấn đề gì và sửa ra sao (tất cả là sự kiện có thật trong quá trình làm).
+\textbf{Quá trình xây từng chức năng.} Mã do trợ lý AI viết theo yêu cầu của tôi. Bảng dưới đây ghi từng chức năng được xây thế nào, tôi gặp vấn đề gì và sửa ra sao; nguồn phát hiện thật của từng lỗi được ghi ở mục \ref{sec:ai}.
 \begin{center}
 \small
 \begin{tabular}{@{}p{2.4cm}p{6.6cm}p{5.2cm}@{}}
 \toprule
-Chức năng & Cách xây & Vấn đề gặp và cách sửa\\
+Chức năng & Cách xây & Vấn đề tôi gặp và cách sửa\\
 \midrule
-Lõi thuật toán & Viết bốn cài đặt trong một mô-đun dùng chung: đệ quy thuần, đệ quy có nhớ, bảng DP, DP hai hàng; thêm hàm truy vết và hàm sinh danh sách bước cho demo. & Test 5000$\times$5000 gọi hàm sinh bước cho 25 triệu ô nên hết bộ nhớ; tách riêng hàm truy vết cho test, chỉ demo mới dùng danh sách bước.\\
-Nhập Input & Hai ô nhập, danh sách ví dụ, nút nạp chuỗi, thông báo lỗi. Giới hạn 20 ký tự; chấp nhận chuỗi rỗng và có ví dụ biên cho cả hai chiều. & Nút ``Chạy'' dễ nhầm với ``Tự chạy'' (do reviewer chỉ ra), đổi thành ``Nạp chuỗi''.\\
-Điều khiển bước & Trạng thái duy nhất là chỉ số bước; mỗi lần đổi bước vẽ lại từ chỉ số nên Tiến, Lùi, nhảy tới đầu hay cuối đều cùng một đường đi. Thêm tự chạy có chỉnh tốc độ và phím tắt. & Khi thử trên trình duyệt, bấm phím End lúc đang chọn một nút chỉ cuộn trang vì phím tắt bị bỏ qua khi tiêu điểm ở nút, ở ô nhập hoặc danh sách. Đây là thiết kế cố ý (tránh đè phím khi đang gõ chữ), ghi vào README.\\
-Điền ô & Tô ô đang tính, gắn nhãn mũi tên cho ba ô nguồn, viền đậm ô được chọn, khung giải thích có công thức với số cụ thể, ô chưa tính để trống. & Khi chỉ dựa vào màu thì khó phân biệt nguồn; thêm nhãn chữ và mũi tên trên ô (việc này càng cần ở bảng 20$\times$20 nơi ô nhỏ).\\
+Lõi thuật toán & Bốn cài đặt trong một mô-đun dùng chung: đệ quy thuần, đệ quy có nhớ, bảng DP, DP hai hàng; thêm hàm truy vết và hàm sinh danh sách bước cho demo. & Test 5000$\times$5000 gọi hàm sinh bước cho 25 triệu ô nên hết bộ nhớ; hàm truy vết được tách riêng cho test, chỉ demo mới dùng danh sách bước.\\
+Nhập Input & Hai ô nhập, danh sách ví dụ, nút nạp chuỗi, thông báo lỗi. Giới hạn 20 ký tự; chấp nhận chuỗi rỗng và có ví dụ biên cho cả hai chiều. & Nút ``Chạy'' dễ nhầm với ``Tự chạy'' (reviewer chỉ ra); tôi chọn đổi thành ``Nạp chuỗi''.\\
+Điều khiển bước & Trạng thái duy nhất là chỉ số bước; mỗi lần đổi bước vẽ lại từ chỉ số nên Tiến, Lùi, nhảy tới đầu hay cuối đều cùng một đường đi. Thêm tự chạy có chỉnh tốc độ và phím tắt. & Khi trợ lý thử trên Firefox, bấm phím End lúc đang chọn một nút chỉ cuộn trang vì phím tắt bị bỏ qua khi tiêu điểm ở nút, ở ô nhập hoặc danh sách. Đây là thiết kế cố ý (tránh đè phím khi đang gõ chữ), đã ghi vào README.\\
+Điền ô & Tô ô đang tính, gắn nhãn mũi tên cho ba ô nguồn, viền đậm ô được chọn, khung giải thích có công thức với số cụ thể, ô chưa tính để trống. & Chỉ dựa vào màu thì khó phân biệt nguồn nên có thêm nhãn chữ và mũi tên trên ô (việc này càng cần ở bảng 20$\times$20 nơi ô nhỏ).\\
 Truy vết & Vẽ đường đi ngược, danh sách thao tác lộ dần theo từng bước, chuỗi sau mỗi thao tác có tô ký tự vừa đổi. Thứ tự ưu tiên khi nhiều đường cùng tối ưu: giữ/thay, xóa, thêm. & ---\\
-Output & Ở cả hai chỗ hiển thị đáp án (khung Kết quả và lời giải thích bước đầu của truy vết), đáp án bị ẩn cho đến khi truy vết xong để người xem tự theo dõi được. & Reviewer GPT-6-sol phát hiện đáp án vẫn lộ ở câu ``đây là kết quả: $d$'' của bước truy vết đầu, dù khung Kết quả đã ẩn; bộ kiểm tra DOM cũng chỉ nhìn khung Kết quả nên bỏ sót. Đã xoá câu đó và thêm kiểm tra cho khung giải thích.\\
-Kiểm thử & Sinh 31 testcase với đáp án từ cài đặt Python độc lập, chạy các cài đặt JavaScript (có giới hạn kích thước cho đệ quy) và bản C, kiểm tra truy vết, ánh xạ mã giả, DOM trên Chrome, đột biến. & Benchmark treo 5 phút vì đệ quy thuần chạy tới $n=20$; chỉ chạy tới $n=12$. Một đột biến lọt qua (mục 6.3).\\
+Output & Ở cả hai chỗ hiển thị đáp án (khung Kết quả và lời giải thích bước đầu của truy vết), đáp án bị ẩn cho đến khi truy vết xong để người xem tự theo dõi được. & Reviewer GPT-6-sol phát hiện đáp án vẫn lộ ở câu ``đây là kết quả: $d$'' của bước truy vết đầu, dù khung Kết quả đã ẩn; bộ kiểm tra DOM cũng chỉ nhìn khung Kết quả nên bỏ sót. Câu đó đã được xóa và thêm kiểm tra cho khung giải thích.\\
+Kiểm thử & 31 testcase với đáp án từ cài đặt Python độc lập; chạy các cài đặt JavaScript (có giới hạn kích thước cho đệ quy) và bản C; kiểm tra truy vết, ánh xạ mã giả, DOM trên Chrome, đột biến. & Benchmark treo 5 phút vì đệ quy thuần chạy tới $n=20$ nên chỉ chạy tới $n=12$. Một đột biến lọt qua (mục 6.3).\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -395,68 +393,70 @@ $n=m$ & Đệ quy thuần & Có nhớ & Bảng DP & Hai hàng & C (cả process)
 
 % ------------------------------------------------------------------ 8
 \section{Quy trình thực hiện với AI}\label{sec:ai}
-\verify{toàn bộ mục này soạn từ nhật ký làm việc thật. Hãy đọc từng dòng, sửa cho đúng trải nghiệm của bạn, và chắc là bạn giải thích được mọi chỗ. Không thêm điều không có thật, không bớt điều có thật.}
+\verify{mục này được viết ở ngôi thứ nhất theo yêu cầu của bạn. Hãy đọc từng dòng, chỉ giữ những gì đúng với việc bạn đã làm, và chắc là bạn giải thích được mọi chỗ. Cô hỏi ``thuật toán tự thiết kế hay AI đưa ra'', nên mục 8.2 phải đúng sự thật.}
 
 \subsection{Công cụ}
 \begin{itemize}[nosep]
-  \item \textbf{Jcode} (trợ lý lập trình trên dòng lệnh) làm công cụ chính. Model điều phối trong phiên: Claude Sonnet 5.5.
-  \item Một worker \textbf{Claude Opus 5.5} (effort high) được giao sắp xếp lại bố cục giao diện, kèm hai kỹ năng thiết kế giao diện là \emph{frontend-design} và \emph{ui-ux-pro-max}. Kỹ năng dựng 3D đã được cài và đọc nhưng không dùng.
-  \item Một reviewer \textbf{GPT-6-sol} (khác họ model với Claude) để phản biện độc lập, chỉ đọc và không được sửa tệp.
+  \item Tôi dùng \textbf{Jcode} (trợ lý lập trình trên dòng lệnh) làm công cụ chính. Model điều phối trong phiên: Claude Sonnet 5.5.
+  \item Tôi yêu cầu một worker \textbf{Claude Opus 5.5} (effort high) sắp xếp lại bố cục giao diện, kèm hai kỹ năng thiết kế giao diện là \emph{frontend-design} và \emph{ui-ux-pro-max}. Kỹ năng dựng 3D đã được cài và đọc nhưng tôi quyết định không dùng.
+  \item Tôi dùng một reviewer \textbf{GPT-6-sol} (khác họ model với Claude) để phản biện độc lập, chỉ đọc và không được sửa tệp.
   \item Chrome headless (đo bố cục, kiểm tra DOM, chụp ảnh), Firefox (xem tay), Node, gcc, Python, \code{tectonic} (biên dịch \LaTeX).
 \end{itemize}
 
 \subsection{Phân công}
-\verify{xác nhận đúng với thực tế}
+\textbf{Trợ lý AI thực hiện:} viết toàn bộ mã nguồn (lõi thuật toán, giao diện, mã giả, bộ kiểm thử, benchmark, bản C), sinh testcase và đáp án đối chứng, soạn khung và nội dung report từ dữ liệu chạy thật. Công thức truy hồi do AI đề xuất; đây là thuật toán chuẩn trong giáo trình, không phải phát minh mới.
 
-\textbf{Do trợ lý AI thực hiện:} viết toàn bộ mã nguồn (lõi thuật toán, giao diện, mã giả, bộ kiểm thử, benchmark, bản C), sinh testcase và đáp án đối chứng, soạn khung và nội dung report từ dữ liệu chạy thật. Công thức truy hồi do AI đề xuất; đây là thuật toán chuẩn trong giáo trình, không phải phát minh mới.
+\textbf{Tôi quyết định} (căn cứ vào các yêu cầu ở mục 8.3): chọn Edit Distance theo đề xuất, bỏ 3D, giữ web thay vì ứng dụng riêng, đồng ý giữ nền sáng và không dùng emoji, đưa bài tham khảo của một bạn cùng lớp, chọn làm panel mã giả và khung Input/Output, yêu cầu review bố cục bằng nhiều model, và chọn sửa hai điểm reviewer đề xuất.
 
-\textbf{Do sinh viên quyết định} (căn cứ vào các yêu cầu trong cuộc trò chuyện ở mục 8.3): chọn Edit Distance, bỏ 3D, bỏ ứng dụng native, giữ nền sáng và không dùng emoji, đưa bài tham khảo của một bạn cùng lớp, chọn làm panel mã giả và khung Input/Output, yêu cầu review bố cục bằng nhiều model, và chọn sửa hai mục reviewer đề xuất.
+\textbf{Phần tôi tự làm và tự kiểm tra.} \todo{Điền đúng những gì bạn đã tự làm: ví dụ đã tự mở demo và bấm thử, tự chạy lại \code{node tools/run\_tests.js}, tự đọc và hiểu chứng minh ở mục 4.5, tự giải thích được công thức truy hồi. Báo cáo không tự khẳng định điều này vì nhật ký làm việc không chứng minh được. Nếu chưa làm thì hãy làm trước khi nộp.}
 
-\textbf{Phần sinh viên tự làm, tự kiểm tra.} \todo{Báo cáo không tự khẳng định bạn đã duyệt hay chạy lại kết quả nào, vì nhật ký làm việc không chứng minh điều đó. Hãy ghi đúng những gì bạn đã tự làm: ví dụ đã tự mở demo và bấm thử, tự chạy lại \code{node tools/run\_tests.js}, tự đọc và hiểu chứng minh ở mục 4.5, tự giải thích được công thức truy hồi. Nếu chưa làm thì hãy làm trước khi nộp.}
 
 \subsection{Các bước và prompt chính}
-Các yêu cầu dưới đây là câu thật trong cuộc trò chuyện, rút gọn nếu quá dài. Ngày 07/10/2026.
+Các yêu cầu dưới đây là câu thật tôi đã gõ trong cuộc trò chuyện, rút gọn nếu quá dài. Ngày 07/10/2026.
 \begin{enumerate}[nosep]
-  \item \emph{``dùng ngôn ngữ c để viết''} kèm ảnh chụp đề Wecode. AI viết lời giải $O(n\cdot m)$ bộ nhớ hai hàng cho bài ``Rút bài trúng thưởng'', kiểm tra với ví dụ đề và 600 test ngẫu nhiên.
-  \item \emph{``đề xuất sao''} (về bài tập lớn). AI so sánh Edit Distance, Knapsack, LIS và đề xuất Edit Distance kèm lý do. Sinh viên chấp nhận.
-  \item \emph{``có nên dùng skill 3d trong jcode để trực quan hoá không''}, rồi \emph{``theo bạn đánh giá có nên làm 3d không, nếu không cần thì bỏ''}. AI đánh giá không cần; bỏ 3D.
-  \item \emph{``có nên viết dưới dạng app chạy thay vì web không''}. AI trả lời nên giữ web một thư mục. Chọn web.
-  \item \emph{``bỏ vào folder AI đi''}. AI dựng dự án gồm lõi thuật toán, bộ testcase, benchmark và demo giao diện, kèm kiểm tra bằng Node và Firefox.
-  \item \emph{``đọc source này để tham khảo: \dots''} (bài của một bạn cùng lớp), rồi \emph{``tôi thấy giao diện nó đẹp bạn có đề xuất gì không''}. AI đề xuất học bốn điều (mã giả tô sáng dòng, khung Input/Output, bộ đếm, nhật ký) và không nên theo nền tối. Sinh viên chọn làm mã giả và khung Input/Output.
-  \item \emph{``làm đi tôi muốn coi lại giao diện sau khi làm''}. AI thêm panel mã giả và khung Mô hình bài toán, sinh viên xem lại trên trình duyệt.
-  \item \emph{``mở một swarm dùng opus review lại bố cục giao diện dùng skill liên quan tới frontend để xử lý''}. Worker Opus 5.5 sắp xếp lại bố cục (số đo ở mục 5.4).
-  \item \emph{``có cần dùng gpt để đánh giá lại không''}, rồi \emph{``chạy đi''} và \emph{``làm đi''}. GPT-6-sol đánh giá độc lập; sửa hai điểm (tương phản mã giả, tên nút).
-  \item \emph{``commit đi, chỉnh lại tên repo trên máy, làm khung report''} và \emph{``tự làm hết đi tôi kiểm tra lại, có thể thêm swarm để review, kiểm tra, đánh giá''}. AI hoàn thiện report; hai reviewer GPT kiểm tra số liệu và đối chiếu yêu cầu của cô, kết quả được ghi ở phần tiếp theo.
+  \item Tôi gửi ảnh chụp đề Wecode và yêu cầu \emph{``dùng ngôn ngữ c để viết''}. AI viết lời giải $O(n\cdot m)$, bộ nhớ hai hàng, cho bài ``Rút bài trúng thưởng'', kiểm tra với ví dụ đề và 600 test ngẫu nhiên.
+  \item Tôi hỏi \emph{``đề xuất sao''} về bài tập lớn. AI so sánh Edit Distance, Knapsack, LIS và đề xuất Edit Distance kèm lý do. Tôi chấp nhận.
+  \item Tôi hỏi \emph{``có nên dùng skill 3d trong jcode để trực quan hoá không''}, rồi \emph{``theo bạn đánh giá có nên làm 3d không, nếu không cần thì bỏ''}. AI đánh giá không cần; tôi bỏ 3D.
+  \item Tôi hỏi \emph{``có nên viết dưới dạng app chạy thay vì web không''}. AI trả lời nên giữ web một thư mục. Tôi chọn web.
+  \item Tôi yêu cầu \emph{``bỏ vào folder AI đi''}. AI dựng dự án gồm lõi thuật toán, bộ testcase, benchmark và demo giao diện, kèm kiểm tra bằng Node và Firefox.
+  \item Tôi đưa một thư mục bài của bạn cùng lớp (\emph{``đọc source này để tham khảo: \dots''}) rồi nói \emph{``tôi thấy giao diện nó đẹp bạn có đề xuất gì không''}. AI đề xuất học bốn điều (mã giả tô sáng dòng, khung Input/Output, bộ đếm, nhật ký) và không nên theo nền tối. Tôi chọn làm mã giả và khung Input/Output.
+  \item Tôi yêu cầu \emph{``làm đi tôi muốn coi lại giao diện sau khi làm''}. AI thêm panel mã giả và khung Mô hình bài toán, và để demo mở sẵn cho tôi xem.
+  \item Tôi yêu cầu \emph{``mở một swarm dùng opus review lại bố cục giao diện dùng skill liên quan tới frontend để xử lý''}. Worker Opus 5.5 sắp xếp lại bố cục (số đo ở mục 5.4).
+  \item Tôi hỏi \emph{``có cần dùng gpt để đánh giá lại không''}, rồi trả lời \emph{``chạy đi''} và \emph{``làm đi''}. GPT-6-sol đánh giá độc lập; hai điểm (tương phản mã giả, tên nút) được sửa.
+  \item Tôi yêu cầu \emph{``commit đi, chỉnh lại tên repo trên máy, làm khung report''} và sau đó \emph{``tự làm hết đi tôi kiểm tra lại, có thể thêm swarm để review, kiểm tra, đánh giá''}. AI hoàn thiện report; hai reviewer GPT kiểm tra số liệu và đối chiếu yêu cầu của cô.
+  \item Tôi yêu cầu chuyển các đoạn đã xử lý và các lỗi gặp phải sang ngôi thứ nhất của tôi (chính phần bạn đang đọc).
 \end{enumerate}
 
-\subsection{Lỗi do AI tạo ra và cách phát hiện, sửa}
-Các lỗi sau xảy ra thật trong quá trình làm (lỗi 8 và 9 là lỗi của chính bản nháp report này, phát hiện khi đối chiếu với số liệu thật).
+
+\subsection{Lỗi gặp phải và cách phát hiện, sửa}
+Các lỗi sau là lỗi tôi gặp thật trong quá trình làm. Cột ``Phát hiện bằng'' ghi nguồn phát hiện thật (trình biên dịch, trình duyệt, trợ lý AI hoặc reviewer); mọi sửa chữa do trợ lý AI thực hiện theo yêu cầu của tôi. Lỗi 8, 9 và 12 là lỗi của chính bản nháp report, được phát hiện khi đối chiếu với số liệu thật hoặc nhờ reviewer.
 \begin{center}
 \small
 \begin{tabular}{@{}p{0.4cm}p{5.1cm}p{4.2cm}p{4.3cm}@{}}
 \toprule
-\# & Lỗi & Phát hiện bằng & Sửa\\
+\# & Lỗi gặp phải & Phát hiện bằng & Cách sửa\\
 \midrule
 1 & Code C hoán đổi hai hàng bằng cách gán mảng (\code{tmp = prev; prev = cur}), không biên dịch được & Trình biên dịch báo ``array type is not assignable'' & Dùng con trỏ \code{int *prev, *cur}\\
 2 & Test chạy cả testcase 5000$\times$5000 qua hàm tạo mô hình từng bước, hết bộ nhớ (hơn 4~GB) & Node thoát với lỗi hết heap & Test truy vết dùng hàm riêng; chỉ demo mới dùng mô hình từng bước (giới hạn 20 ký tự)\\
 3 & Benchmark treo 5 phút vì để đệ quy thuần chạy tới $n=20$ & Lệnh chạy quá thời gian 300 giây & Chỉ chạy đệ quy thuần tới $n=12$, ghi rõ lý do trong mã\\
 4 & Thông báo cuối truy vết ghi ``khung bên dưới'' trong khi khung Kết quả nằm bên cạnh & Xem ảnh chụp giao diện thật & Đổi thành ``khung Kết quả''\\
 5 & Chạy mutation test lần đầu không in ra kết quả nào, vì bộ lọc output của lệnh sai, nên chưa kết luận được gì & Thấy cả ba lần chạy đều trống, kể cả bản gốc & Sửa bộ lọc, chạy lại\\
-6 & Kiểm tra DOM chỉ so sánh với chính hàm ánh xạ mã giả, nên một lỗi ánh xạ nhánh ``trùng'' lọt qua (báo PASS khi đã chèn lỗi) & Chạy lại sau khi sửa bộ lọc, thấy đúng một đột biến vẫn PASS & Đọc chữ thật của dòng đang sáng trên trang để so; chạy lại: 4/4 lỗi bị bắt\\
+6 & Kiểm tra DOM chỉ so sánh với chính hàm ánh xạ mã giả, nên một lỗi ánh xạ nhánh ``trùng'' lọt qua (báo PASS khi đã chèn lỗi) & Chạy lại sau khi sửa bộ lọc, thấy đúng một đột biến vẫn PASS & Đọc chữ thật của dòng đang sáng trên trang để so; chạy lại: 4/4 lỗi bị bắt (về sau thêm lỗi thứ năm, mục 11)\\
 7 & Thêm mã giả làm trang cao 1557~px, mã giả và dòng đang sáng nằm ngoài màn hình ở nhiều bước & Đo bằng Chrome headless (mục 5.4) & Sắp xếp lại bố cục, đo lại: mã giả 100\% trong màn hình\\
 8 & Bản nháp report ghi ``nhân khoảng 30 lần'' và ``$\Theta(5.83^n)$'', chưa đúng với số đo & Tính lại số lời gọi bằng quy hoạch động: 25 đến 31 ở cỡ nhỏ, tiến dần tới 34 & Viết lại cho khớp số đo\\
-9 & Bản nháp ghi bản C là ``đã nộp lên Wecode'' khi không có bằng chứng nộp & Đối chiếu lại nhật ký làm việc & Đổi thành ``giải bài Wecode'' và để ô điền kết quả cho sinh viên\\
+9 & Bản nháp ghi bản C là ``đã nộp lên Wecode'' khi không có bằng chứng nộp & Đối chiếu lại nhật ký làm việc & Đổi thành ``giải bài Wecode'' và để ô điền kết quả cho tôi\\
 10 & Dòng ngữ cảnh của mã giả quá nhạt (tương phản 1.11:1); nút ``Chạy'' dễ nhầm với ``Tự chạy'' & Reviewer GPT-6-sol, tính lại bằng công thức WCAG & Tăng tương phản vạch lên 5.30:1; đổi tên nút thành ``Nạp chuỗi''\\
-11 & Đáp án vẫn lộ ở câu ``đây là kết quả: $d$'' của bước truy vết đầu, dù khung Kết quả đã ẩn; bộ kiểm tra DOM chỉ nhìn khung Kết quả nên bỏ sót & Reviewer GPT-6-sol; đã tái hiện trong Chrome (bước 21 có ``kết quả:'' khi \code{\#result} vẫn là ``?'') & Xoá câu đó; thêm kiểm tra khung giải thích vào DOM check và thêm đột biến thứ năm (bị bắt)\\
+11 & Đáp án vẫn lộ ở câu ``đây là kết quả: $d$'' của bước truy vết đầu, dù khung Kết quả đã ẩn; bộ kiểm tra DOM chỉ nhìn khung Kết quả nên bỏ sót & Reviewer GPT-6-sol; đã tái hiện trong Chrome (bước 21 có ``kết quả:'' khi \code{\#result} vẫn là ``?'') & Xóa câu đó; thêm kiểm tra khung giải thích vào DOM check và thêm đột biến thứ năm (bị bắt)\\
 12 & Chứng minh tính đúng đắn bản đầu chia mọi dãy tối ưu thành ba trường hợp theo ký tự cuối mà không nêu bước chuẩn hóa về phép gióng hàng & Reviewer GPT-6-sol (hai bất đẳng thức phụ đúng, chỉ thiếu bước này) & Viết lại mục 4.5 theo phép gióng hàng, dẫn Wagner--Fischer\\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \subsection{Nhận xét}
-\textbf{Quan sát từ nhật ký làm việc} (do trợ lý AI ghi, không phải nhận xét của sinh viên): các lỗi trong bảng trên đa số là lỗi ``trông có vẻ đúng'': một bộ kiểm thử báo PASS khi đã chèn lỗi, đáp án vẫn lộ ở một đoạn lời giải thích trong khi khung Kết quả đã ẩn, chứng minh thiếu một bước chuẩn hóa, và hai số đo ghi sai trong bản nháp. Tất cả chỉ lộ ra khi chạy lại, đối chiếu với số thật hoặc nhờ một reviewer khác họ model.
+Nhìn lại các lỗi ở bảng trên, đa số là lỗi ``trông có vẻ đúng'': một bộ kiểm thử báo PASS khi đã chèn lỗi, đáp án vẫn lộ ở một đoạn lời giải thích trong khi khung Kết quả đã ẩn, chứng minh thiếu một bước chuẩn hóa, và hai số đo ghi sai trong bản nháp. Tất cả chỉ lộ ra khi chạy lại, đối chiếu với số thật hoặc nhờ một reviewer khác họ model.
 
-\todo{Nhận xét của chính bạn, 3 đến 5 câu: AI giúp được gì, sai ở đâu, bạn học được gì về thiết kế thuật toán. Đừng chép đoạn quan sát ở trên.}
+\todo{Thêm 2 đến 3 câu của riêng bạn: bạn học được gì về thiết kế thuật toán (ví dụ vì sao bảng DP đủ để tìm số thao tác ít nhất), và AI giúp được gì hay sai ở đâu theo trải nghiệm của bạn.}
+
 
 % ------------------------------------------------------------------ 9
 \section{Kết luận}
