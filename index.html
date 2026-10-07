@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edit Distance - minh họa từng bước</title>
+<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Khoảng cách chỉnh sửa <span class="sub">(Edit Distance / Levenshtein)</span></h1>
+    <p class="lead">Số thao tác <b>thêm</b>, <b>xóa</b>, <b>thay</b> một ký tự ít nhất để biến chuỗi <b>A</b> thành chuỗi <b>B</b>. Quy hoạch động O(n·m).</p>
+  </div>
+</header>
+
+<main>
+  <section class="panel inputs" aria-label="Dữ liệu vào">
+    <div class="field">
+      <label for="inA">Chuỗi A (nguồn, theo hàng)</label>
+      <input id="inA" type="text" maxlength="20" value="LOVE" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="field">
+      <label for="inB">Chuỗi B (đích, theo cột)</label>
+      <input id="inB" type="text" maxlength="20" value="MOVIE" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field preset">
+      <label for="preset">Ví dụ có sẵn</label>
+      <select id="preset"></select>
+    </div>
+    <button id="btnLoad" class="primary">Chạy</button>
+    <p id="inputMsg" class="msg" role="status"></p>
+  </section>
+
+  <section class="controls panel" aria-label="Điều khiển">
+    <button id="btnReset" title="Về bước đầu (Home)">⏮ Đầu</button>
+    <button id="btnBack" title="Lùi một bước (←)">◀ Lùi</button>
+    <button id="btnPlay" class="primary" title="Tự chạy / tạm dừng (Space)">▶ Tự chạy</button>
+    <button id="btnNext" title="Tiến một bước (→)">Tiến ▶</button>
+    <button id="btnEnd" title="Tới kết quả (End)">Kết quả ⏭</button>
+    <label class="speed">Tốc độ
+      <input id="speed" type="range" min="1" max="10" value="5">
+    </label>
+    <div class="phases" id="phases" aria-label="Giai đoạn">
+      <span data-ph="0">1. Khởi tạo</span><span data-ph="1">2. Điền bảng</span><span data-ph="2">3. Truy vết</span>
+    </div>
+    <div class="stepinfo" id="stepInfo"></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel tablewrap" aria-label="Bảng quy hoạch động">
+      <div class="tablescroll"><table id="dp" aria-label="Bảng dp"></table></div>
+      <div class="legend" aria-label="Chú thích">
+        <span><i class="sw cur"></i>Ô đang tính</span>
+        <span><i class="sw dg"></i>↖ thay</span>
+        <span><i class="sw up"></i>↑ xóa</span>
+        <span><i class="sw lf"></i>← thêm</span>
+        <span><i class="sw ch"></i>nguồn được chọn (đậm)</span>
+        <span><i class="sw pa"></i>đường truy vết</span>
+      </div>
+    </section>
+
+    <aside class="side">
+      <section class="panel" aria-live="polite">
+        <h2>Bước hiện tại</h2>
+        <div id="explain" class="explain"></div>
+      </section>
+      <section class="panel result" id="resultPanel">
+        <h2>Kết quả</h2>
+        <div id="result" class="resultbody"></div>
+        <ol id="ops" class="ops"></ol>
+      </section>
+    </aside>
+  </div>
+
+  <section class="panel formula">
+    <h2>Công thức</h2>
+    <pre>dp[i][0] = i          dp[0][j] = j
+nếu A[i] = B[j]:   dp[i][j] = dp[i-1][j-1]
+ngược lại:         dp[i][j] = 1 + min( dp[i-1][j-1]  (thay),
+                                       dp[i-1][j]    (xóa A[i]),
+                                       dp[i][j-1]    (thêm B[j]) )</pre>
+    <p class="note">Demo giới hạn 20 ký tự mỗi chuỗi để bảng đủ lớn mà đọc được. Thuật toán thật chạy tới 5000 ký tự (xem <code>tools/benchmark.js</code> và bộ testcase).</p>
+  </section>
+</main>
+
+<script src="src/editdistance.js"></script>
+<script src="src/app.js"></script>
+</body>
+</html>
