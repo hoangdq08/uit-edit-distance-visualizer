@@ -1,0 +1,45 @@
+\begin{center}\small
+\begin{tabular}{@{}rcclrrrr@{}}
+\toprule
+Bước & Ô & $A[i]$ vs $B[j]$ & Nhánh & $\nwarrow$ & $\uparrow$ & $\leftarrow$ & Giá trị\\
+\midrule
+0 & \multicolumn{7}{l}{khởi tạo hàng và cột 0: $dp[i][0]=i$, $dp[0][j]=j$}\\
+1 & (1,1) & \code{L} / \code{M} & min & 0 & 1 & 1 & \textbf{1}\\
+2 & (1,2) & \code{L} / \code{O} & min & 1 & 2 & 1 & \textbf{2}\\
+3 & (1,3) & \code{L} / \code{V} & min & 2 & 3 & 2 & \textbf{3}\\
+4 & (1,4) & \code{L} / \code{I} & min & 3 & 4 & 3 & \textbf{4}\\
+5 & (1,5) & \code{L} / \code{E} & min & 4 & 5 & 4 & \textbf{5}\\
+6 & (2,1) & \code{O} / \code{M} & min & 1 & 1 & 2 & \textbf{2}\\
+7 & (2,2) & \code{O} / \code{O} & trùng & 1 & -- & -- & \textbf{1}\\
+8 & (2,3) & \code{O} / \code{V} & min & 2 & 3 & 1 & \textbf{2}\\
+9 & (2,4) & \code{O} / \code{I} & min & 3 & 4 & 2 & \textbf{3}\\
+10 & (2,5) & \code{O} / \code{E} & min & 4 & 5 & 3 & \textbf{4}\\
+11 & (3,1) & \code{V} / \code{M} & min & 2 & 2 & 3 & \textbf{3}\\
+12 & (3,2) & \code{V} / \code{O} & min & 2 & 1 & 3 & \textbf{2}\\
+13 & (3,3) & \code{V} / \code{V} & trùng & 1 & -- & -- & \textbf{1}\\
+14 & (3,4) & \code{V} / \code{I} & min & 2 & 3 & 1 & \textbf{2}\\
+15 & (3,5) & \code{V} / \code{E} & min & 3 & 4 & 2 & \textbf{3}\\
+16 & (4,1) & \code{E} / \code{M} & min & 3 & 3 & 4 & \textbf{4}\\
+17 & (4,2) & \code{E} / \code{O} & min & 3 & 2 & 4 & \textbf{3}\\
+18 & (4,3) & \code{E} / \code{V} & min & 2 & 1 & 3 & \textbf{2}\\
+19 & (4,4) & \code{E} / \code{I} & min & 1 & 2 & 2 & \textbf{2}\\
+20 & (4,5) & \code{E} / \code{E} & trùng & 2 & -- & -- & \textbf{2}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% --- truy vet (di nguoc tu o cuoi ve (0,0)) ---
+\begin{center}\small
+\begin{tabular}{@{}rcll@{}}
+\toprule
+Bước & Ô & Thao tác & Giá trị ô\\
+\midrule
+21 & (4,5) & giữ \code{E} & 2\\
+22 & (3,4) & thêm \code{I} & 2\\
+23 & (3,3) & giữ \code{V} & 1\\
+24 & (2,2) & giữ \code{O} & 1\\
+25 & (1,1) & thay \code{L} thành \code{M} & 1\\
+26 & (0,0) & xong, về $(0,0)$ & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
