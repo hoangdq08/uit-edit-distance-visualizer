@@ -19,24 +19,32 @@ body {
   margin: 0; background: var(--bg); color: var(--ink);
   font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
-.top { padding: 18px 28px 6px; }
+/* Header: tieu de + khung nhap cung mot hang de danh chieu cao cho bang/ma gia. */
+.top {
+  max-width: 1500px; margin: 0 auto; padding: 12px 28px 0;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px;
+}
+.top .title { flex: 1 1 340px; min-width: 0; }
 h1 { margin: 0; font-size: 24px; letter-spacing: -0.01em; }
 h1 .sub { font-size: 14px; font-weight: 400; color: var(--dim); }
-h2 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--dim); }
+h2 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--dim); }
 .lead { margin: 4px 0 0; color: var(--dim); }
-main { padding: 8px 28px 40px; display: flex; flex-direction: column; gap: 14px; max-width: 1500px; margin: 0 auto; }
-.panel { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+main { padding: 12px 28px 40px; display: flex; flex-direction: column; gap: 12px; max-width: 1500px; margin: 0 auto; }
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
 
-.inputs { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px; }
+.inputs { flex: 0 1 auto; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; padding: 10px 14px; }
 .field { display: flex; flex-direction: column; gap: 4px; }
 .field label { font-size: 12px; color: var(--dim); }
+/* Rong vua 20 ky tu (maxlength) de chuoi dai nhat hien du, khong bi cuon trong o nhap. */
 .field input, .field select {
-  font: 600 18px var(--mono); padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px;
-  background: #fff; color: var(--ink); min-width: 190px; letter-spacing: .06em;
+  font: 600 16px var(--mono); padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px;
+  background: #fff; color: var(--ink); width: calc(20ch + 20 * .06em + 22px); letter-spacing: .06em;
 }
-.field select { font: 14px system-ui, sans-serif; letter-spacing: 0; min-width: 230px; padding: 10px; }
-.arrow { font-size: 22px; padding-bottom: 8px; color: var(--dim); }
-.msg { flex-basis: 100%; margin: 0; min-height: 1.2em; font-size: 13px; color: var(--up-line); }
+.field select { font: 14px system-ui, sans-serif; letter-spacing: 0; width: 230px; padding: 8px; }
+.arrow { font-size: 20px; padding-bottom: 6px; color: var(--dim); }
+.msg { flex-basis: 100%; margin: 0; font-size: 13px; color: var(--up-line); }
+/* Rong thi khong chiem mot hang rieng (van nam trong DOM de role=status hoat dong). */
+.msg:empty { flex-basis: 0; }
 .msg.info { color: var(--dim); }
 
 button {
@@ -48,25 +56,55 @@ button:disabled { opacity: .45; cursor: default; }
 button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
 button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #86b7de; outline-offset: 1px; }
 
-.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 8px 14px; }
 .speed { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--dim); margin-left: 6px; }
 .phases { display: flex; gap: 4px; margin-left: auto; }
 .phases span { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: #ece7da; color: var(--dim); }
 .phases span.on { background: var(--accent); color: #fff; font-weight: 600; }
 .stepinfo { font: 13px var(--mono); color: var(--dim); min-width: 120px; text-align: right; }
 
-.grid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 14px; align-items: start; }
-@media (max-width: 1100px) { .grid { grid-template-columns: 1fr; } }
-.side { display: flex; flex-direction: column; gap: 14px; }
-.tablescroll { overflow: auto; padding-bottom: 4px; }
+/* Man hinh rong: cot trai = bang (+ ket qua ben duoi), cot phai = giai thich + ma gia.
+   Cot phai rong du cho dong ma gia dai nhat (~68 ky tu) de khong phai cuon ngang. */
+.grid {
+  display: grid; gap: 12px; align-items: start;
+  grid-template-columns: minmax(0, 1fr) clamp(520px, 42vw, 610px);
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "table side" "result side";
+}
+.tablewrap { grid-area: table; min-width: 0; }
+.side { grid-area: side; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.grid > .result { grid-area: result; min-width: 0; }
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "table" "side" "result"; }
+}
+/* container-type: de o bang tinh kich thuoc theo be rong cot (don vi cqi). */
+.tablescroll { overflow: auto; padding-bottom: 4px; container-type: inline-size; }
 
-table { border-collapse: separate; border-spacing: 3px; margin: 0 auto; }
+/* Kich thuoc o co theo so hang/cot cua bang (dem bang :has, khong can JS) de bang lon vua ca chieu cao
+   man hinh (100vh tru phan header/dieu khien ~250px) lan be rong cot (100cqi). K = so o moi chieu ke ca
+   tieu de. Bang nho giu 46px. Duoi muc san thi .tablescroll cuon (fallback).
+   simplify: chia bac theo nguong; neu can chinh xac tung kich thuoc thi dat --k tu JS. */
+#dp { --cell: 46px; --gap: 3px; }
+#dp:has(tr:nth-child(9)), #dp:has(tr:first-child > :nth-child(9)) {   /* n hoac m >= 7, K <= 13 */
+  --cell: clamp(30px, min(calc((100vh - 250px) / 13 - 3px), calc((100cqi - 52px) / 13)), 46px);
+}
+#dp:has(tr:nth-child(14)), #dp:has(tr:first-child > :nth-child(14)) { /* K <= 16 */
+  --cell: clamp(24px, min(calc((100vh - 250px) / 16 - 3px), calc((100cqi - 60px) / 16)), 42px);
+}
+#dp:has(tr:nth-child(17)), #dp:has(tr:first-child > :nth-child(17)) { /* K <= 19 */
+  --cell: clamp(24px, min(calc((100vh - 250px) / 19 - 3px), calc((100cqi - 70px) / 19)), 38px);
+}
+#dp:has(tr:nth-child(20)), #dp:has(tr:first-child > :nth-child(20)) { /* K <= 22 (20x20) */
+  --cell: clamp(22px, min(calc((100vh - 250px) / 22 - 2px), calc((100cqi - 58px) / 22)), 36px); --gap: 2px;
+}
+table { border-collapse: separate; border-spacing: var(--gap, 3px); margin: 0 auto; }
 th, td {
-  width: 46px; height: 46px; text-align: center; vertical-align: middle;
-  font: 600 17px var(--mono); border-radius: 7px; position: relative;
+  width: var(--cell, 46px); height: var(--cell, 46px); padding: 0;
+  text-align: center; vertical-align: middle;
+  font: 600 max(12px, calc(var(--cell, 46px) * .37)) var(--mono); border-radius: 7px; position: relative;
 }
 th { background: transparent; color: var(--dim); font-weight: 700; }
-th.corner { font-size: 11px; font-weight: 400; }
+th.corner { font-size: clamp(8px, calc(var(--cell, 46px) * .26), 11px); font-weight: 400; white-space: nowrap; }
 th.hl { background: var(--cur); color: var(--cur-ink); }
 td { background: #f0ece0; color: transparent; border: 2px solid transparent; transition: background .12s, border-color .12s; }
 td.vis { background: #fff; color: var(--ink); border-color: var(--line); }
@@ -81,10 +119,10 @@ td.pa.cur { background: var(--cur); border-color: var(--pa-line); box-shadow: 0 
 /* nhan chu (khong chi dua vao mau) */
 td[data-tag]::before {
   content: attr(data-tag); position: absolute; top: 1px; left: 3px;
-  font: 700 10px system-ui, sans-serif; color: var(--ink); opacity: .75;
+  font: 700 clamp(8px, calc(var(--cell, 46px) * .22), 10px) system-ui, sans-serif; color: var(--ink); opacity: .75;
 }
 
-.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-size: 12.5px; color: var(--dim); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; font-size: 12.5px; color: var(--dim); }
 .legend span { display: inline-flex; align-items: center; gap: 6px; }
 .sw { width: 16px; height: 16px; border-radius: 4px; border: 2px solid var(--line); display: inline-block; }
 .sw.cur { background: var(--cur); border-color: #c69a00; }
@@ -94,8 +132,12 @@ td[data-tag]::before {
 .sw.ch { background: #fff; border-color: var(--ink); }
 .sw.pa { background: var(--pa); border-color: var(--pa-line); }
 
-.explain { font-size: 14.5px; min-height: 120px; }
-.explain .eq { font: 600 14px var(--mono); background: #f3efe3; border-radius: 8px; padding: 8px 10px; margin: 8px 0; overflow-x: auto; white-space: pre-wrap; }
+/* min-height = chieu cao lon nhat do duoc (buoc o khac ky tu, ~189px) de khung ma gia ben duoi
+   khong nhay len xuong moi lan doi buoc. */
+.explain { font-size: 14.5px; min-height: 190px; }
+.explain p { margin: 0 0 6px; }
+.explain p:last-child { margin-bottom: 0; }
+.explain .eq { font: 600 14px var(--mono); background: #f3efe3; border-radius: 8px; padding: 6px 10px; margin: 6px 0; overflow-x: auto; white-space: pre-wrap; }
 .explain .tag { display: inline-block; font: 700 12px system-ui; padding: 1px 7px; border-radius: 999px; margin-right: 4px; }
 .tag.dg { background: var(--dg); color: #144a78; }
 .tag.up { background: var(--up); color: #7d2020; }
@@ -114,7 +156,30 @@ td[data-tag]::before {
 .ops li .res mark { background: var(--cur); color: var(--cur-ink); border-radius: 3px; padding: 0 1px; }
 .ops li .res .bar { display: inline-block; width: 2px; height: 1em; background: var(--up-line); vertical-align: -2px; margin: 0 1px; }
 
-.formula pre { margin: 0; font: 13.5px/1.55 var(--mono); background: #f3efe3; border-radius: 8px; padding: 12px 14px; overflow-x: auto; }
+h2 .h2sub { text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 12.5px; }
+h3 { margin: 12px 0 4px; font-size: 13px; color: var(--ink); }
+h3:first-child { margin-top: 0; }
+
+/* Co chu theo be rong khung (cqi) de dong dai nhat (~67 ky tu, dong 8) khong phai cuon ngang;
+   toi da 13px, toi thieu 11px (duoi muc do thi overflow-x: auto). */
+.pseudowrap { container-type: inline-size; }
+.pseudo { list-style: none; margin: 0; padding: 4px 0; counter-reset: ln; background: #f3efe3; border-radius: 8px; overflow-x: auto; }
+.pseudo li {
+  display: flex; gap: 8px; padding: 1px 8px 1px 6px; white-space: pre; color: var(--ink);
+  font: clamp(11px, calc((100cqi - 60px) / 42), 13px)/1.45 var(--mono);
+  border-left: 4px solid transparent; position: relative;
+}
+.pseudo li .no { width: 22px; flex: none; text-align: right; color: var(--dim); user-select: none; }
+.pseudo li .cm { color: var(--dim); }
+.pseudo li.ctx { background: #ddd3b5; border-left-color: #6f6139; }
+.pseudo li.act { background: var(--cur); border-left-color: #c69a00; color: var(--cur-ink); font-weight: 700; }
+.pseudo li.act .no, .pseudo li.act .cm { color: var(--cur-ink); }
+
+.model h3 + ul { margin: 0 0 4px; padding-left: 18px; }
+.model li { margin: 2px 0; }
+.modelgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 24px; }
+@media (max-width: 1100px) { .modelgrid { grid-template-columns: 1fr; } }
+.model pre { margin: 0; font: 13.5px/1.55 var(--mono); background: #f3efe3; border-radius: 8px; padding: 12px 14px; overflow-x: auto; }
 .note { color: var(--dim); font-size: 13px; margin: 8px 0 0; }
 code { font-family: var(--mono); font-size: .92em; background: #f3efe3; padding: 1px 5px; border-radius: 4px; }
 

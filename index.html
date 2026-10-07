@@ -8,13 +8,11 @@
 </head>
 <body>
 <header class="top">
-  <div>
+  <div class="title">
     <h1>Khoảng cách chỉnh sửa <span class="sub">(Edit Distance / Levenshtein)</span></h1>
     <p class="lead">Số thao tác <b>thêm</b>, <b>xóa</b>, <b>thay</b> một ký tự ít nhất để biến chuỗi <b>A</b> thành chuỗi <b>B</b>. Quy hoạch động O(n·m).</p>
   </div>
-</header>
-
-<main>
+  <!-- Khung nhap nam cung hang voi tieu de de danh chieu cao man hinh cho bang + ma gia -->
   <section class="panel inputs" aria-label="Dữ liệu vào">
     <div class="field">
       <label for="inA">Chuỗi A (nguồn, theo hàng)</label>
@@ -29,10 +27,12 @@
       <label for="preset">Ví dụ có sẵn</label>
       <select id="preset"></select>
     </div>
-    <button id="btnLoad" class="primary">Chạy</button>
+    <button id="btnLoad" class="primary" title="Nạp lại hai chuỗi A và B, quay về bước 0">Nạp chuỗi</button>
     <p id="inputMsg" class="msg" role="status"></p>
   </section>
+</header>
 
+<main>
   <section class="controls panel" aria-label="Điều khiển">
     <button id="btnReset" title="Về bước đầu (Home)">⏮ Đầu</button>
     <button id="btnBack" title="Lùi một bước (←)">◀ Lùi</button>
@@ -48,6 +48,8 @@
     <div class="stepinfo" id="stepInfo"></div>
   </section>
 
+  <!-- Thu tu DOM = thu tu doc o man hinh hep: bang, giai thich + ma gia, ket qua.
+       Man hinh rong: bang + ket qua cot trai, giai thich + ma gia cot phai (xem .grid trong style.css). -->
   <div class="grid">
     <section class="panel tablewrap" aria-label="Bảng quy hoạch động">
       <div class="tablescroll"><table id="dp" aria-label="Bảng dp"></table></div>
@@ -62,30 +64,55 @@
     </section>
 
     <aside class="side">
-      <section class="panel" aria-live="polite">
+      <section class="panel explainwrap" aria-live="polite">
         <h2>Bước hiện tại</h2>
         <div id="explain" class="explain"></div>
       </section>
-      <section class="panel result" id="resultPanel">
-        <h2>Kết quả</h2>
-        <div id="result" class="resultbody"></div>
-        <ol id="ops" class="ops"></ol>
+      <section class="panel pseudowrap" aria-label="Mã giả">
+        <h2>Mã giả <span class="h2sub">(dòng đang thực hiện được tô sáng)</span></h2>
+        <ol id="pseudo" class="pseudo"></ol>
       </section>
     </aside>
+
+    <section class="panel result" id="resultPanel">
+      <h2>Kết quả</h2>
+      <div id="result" class="resultbody"></div>
+      <ol id="ops" class="ops"></ol>
+    </section>
   </div>
 
-  <section class="panel formula">
-    <h2>Công thức</h2>
-    <pre>dp[i][0] = i          dp[0][j] = j
-nếu A[i] = B[j]:   dp[i][j] = dp[i-1][j-1]
-ngược lại:         dp[i][j] = 1 + min( dp[i-1][j-1]  (thay),
-                                       dp[i-1][j]    (xóa A[i]),
-                                       dp[i][j-1]    (thêm B[j]) )</pre>
-    <p class="note">Demo giới hạn 20 ký tự mỗi chuỗi để bảng đủ lớn mà đọc được. Thuật toán thật chạy tới 5000 ký tự (xem <code>tools/benchmark.js</code> và bộ testcase).</p>
+  <section class="panel model" aria-label="Mô hình bài toán">
+    <h2>Mô hình bài toán</h2>
+    <div class="modelgrid">
+      <div>
+        <h3>Input</h3>
+        <ul>
+          <li><code>A</code>: chuỗi nguồn, độ dài <code>n</code></li>
+          <li><code>B</code>: chuỗi đích, độ dài <code>m</code></li>
+          <li>Ký tự thuộc <code>A..Z</code>. Giới hạn đề (Wecode): <code>1 ≤ n, m ≤ 5000</code>. Demo: <code>0 ≤ n, m ≤ 20</code></li>
+        </ul>
+        <h3>Output</h3>
+        <ul>
+          <li><code>d</code>: số nguyên, số thao tác thêm / xóa / thay ít nhất để biến <code>A</code> thành <code>B</code></li>
+          <li>Demo in thêm một dãy thao tác cụ thể đạt đúng <code>d</code> bước</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Công thức truy hồi</h3>
+        <pre>dp[i][0] = i          dp[0][j] = j
+A[i] = B[j]:  dp[i][j] = dp[i-1][j-1]
+ngược lại:    dp[i][j] = 1 + min( dp[i-1][j-1]  (thay),
+                                  dp[i-1][j]    (xóa A[i]),
+                                  dp[i][j-1]    (thêm B[j]) )
+đáp án:       d = dp[n][m]</pre>
+        <p class="note"><code>dp[i][j]</code> là số thao tác ít nhất để biến <code>A[1..i]</code> thành <code>B[1..j]</code>. Độ phức tạp thời gian <code>O(n·m)</code>, bộ nhớ <code>O(n·m)</code> (giữ bảng để truy vết) hoặc <code>O(m)</code> (chỉ tính <code>d</code>).</p>
+      </div>
+    </div>
   </section>
 </main>
 
 <script src="src/editdistance.js"></script>
+<script src="src/pseudocode.js"></script>
 <script src="src/app.js"></script>
 </body>
 </html>

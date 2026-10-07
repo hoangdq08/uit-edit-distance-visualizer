@@ -92,4 +92,31 @@ console.log('-'.repeat(70));
 for (const r of rows) console.log(line(r));
 console.log('-'.repeat(70));
 console.log(cases.length - fail + '/' + cases.length + ' testcase dat' + (cBin ? ' (da kiem tra ca ban C)' : ''));
+
+// --- Anh xa buoc -> dong ma gia (cho demo): kiem tra tren cac test nho, moi buoc cua analyze() ---
+const PC = require('../src/pseudocode.js');
+let pcFail = 0, pcSteps = 0;
+function pcCheck(cond, msg) { if (!cond) { pcFail++; if (pcFail <= 5) console.log('  ma gia SAI: ' + msg); } }
+for (const c of cases) {
+  if (ED.chars(c.a).length > 20 || ED.chars(c.b).length > 20) continue; // demo chi nhan <= 20
+  const model = ED.analyze(c.a, c.b);
+  for (const st of model.steps) {
+    pcSteps++;
+    const m = PC.forStep(st);
+    const all = m.act.concat(m.ctx);
+    pcCheck(all.every(n => Number.isInteger(n) && n >= 1 && n <= PC.LINES.length), 'dong ngoai pham vi o test ' + c.id);
+    pcCheck(m.act.length > 0, 'buoc khong co dong nao duoc to (test ' + c.id + ', ' + st.type + ')');
+    const txt = n => PC.LINES[n - 1][1];
+    if (st.type === 'cell') {
+      // dong duoc to phai dung nhanh if/else so voi st.same, va lap dung ve dp[i][j]
+      pcCheck(m.act.some(n => txt(n).startsWith('dp[i][j] ← dp[i-1][j-1]')) === st.same, 'nhanh trung/khac sai o test ' + c.id);
+      pcCheck(m.act.some(n => txt(n).includes('1 + min(')) === !st.same, 'nhanh min sai o test ' + c.id);
+    } else if (st.type === 'trace' && st.move) {
+      const want = { keep: 'giữ', replace: 'thay', delete: 'xóa', insert: 'thêm' }[st.move.kind];
+      pcCheck(m.act.some(n => txt(n).startsWith(want)), 'thao tac ' + st.move.kind + ' khong khop dong ma gia o test ' + c.id);
+    }
+  }
+}
+console.log(pcSteps + ' buoc demo kiem tra anh xa ma gia: ' + (pcFail ? pcFail + ' loi' : 'khop'));
+if (pcFail) fail++;
 process.exit(fail ? 1 : 0);

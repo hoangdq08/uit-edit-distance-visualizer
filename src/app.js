@@ -2,6 +2,7 @@
 (function () {
   'use strict';
   var ED = window.EditDistance;
+  var PC = window.Pseudocode;
   var MAXLEN = 20; // gioi han demo, khop voi maxlength cua input
 
   var PRESETS = [
@@ -23,8 +24,26 @@
     a: $('inA'), b: $('inB'), preset: $('preset'), load: $('btnLoad'), msg: $('inputMsg'),
     reset: $('btnReset'), back: $('btnBack'), play: $('btnPlay'), next: $('btnNext'), end: $('btnEnd'),
     speed: $('speed'), phases: $('phases'), stepInfo: $('stepInfo'),
-    dp: $('dp'), explain: $('explain'), result: $('result'), ops: $('ops'),
+    dp: $('dp'), explain: $('explain'), result: $('result'), ops: $('ops'), pseudo: $('pseudo'),
   };
+
+  // Ma gia: dung mot lan, moi buoc chi doi class act/ctx.
+  var pseudoLis = PC.LINES.map(function (ln, idx) {
+    var li = document.createElement('li');
+    var text = ln[1], cm = '', k = text.indexOf('//');
+    if (k >= 0) { cm = text.slice(k); text = text.slice(0, k).replace(/\s+$/, ''); }
+    li.innerHTML = '<span class="no">' + (idx + 1) + '</span><span>' + new Array(ln[0] * 4 + 1).join(' ') + esc(text) +
+      (cm ? '  <span class="cm">' + esc(cm) + '</span>' : '') + '</span>';
+    el.pseudo.appendChild(li);
+    return li;
+  });
+  function renderPseudo(st) {
+    var m = PC.forStep(st);
+    pseudoLis.forEach(function (li, idx) {
+      var n = idx + 1;
+      li.className = m.act.indexOf(n) >= 0 ? 'act' : m.ctx.indexOf(n) >= 0 ? 'ctx' : '';
+    });
+  }
 
   var model = null, step = 0, timer = null;
   var cells = []; // cells[i][j] = <td>
@@ -131,6 +150,7 @@
     if (atEnd) stop();
 
     el.explain.innerHTML = explain(st);
+    renderPseudo(st);
     renderResult(inTrace, revealed, atEnd);
   }
 
