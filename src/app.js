@@ -187,7 +187,7 @@
     var mv = st.move, desc;
     var from = '<code>dp[' + st.i + '][' + st.j + '] = ' + model.dp[st.i][st.j] + '</code>';
     if (st.k === 0) {
-      var intro = '<p>Bắt đầu truy vết từ ô cuối ' + from + ' (đây là kết quả: ' + distTxt + '). Từ mỗi ô, đi ngược về ô đã sinh ra giá trị đó.</p>';
+      var intro = '<p>Bắt đầu truy vết từ ô cuối ' + from + '. Từ mỗi ô, đi ngược về ô đã sinh ra giá trị đó.</p>';
     } else intro = '<p>Đang ở ô ' + from + '.</p>';
     if (mv.kind === 'keep') desc = '<span class="tag ok">giữ</span> ' + q(mv.aChar) + ' = ' + q(mv.bChar) + ' và ô chéo bằng nhau: đi chéo ↖, không tốn thao tác.';
     else if (mv.kind === 'replace') desc = '<span class="tag dg">↖ thay</span> ô chéo nhỏ hơn 1: thay ' + q(mv.aChar) + ' thành ' + q(mv.bChar) + '.';

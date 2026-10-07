@@ -91,6 +91,9 @@
         } else if (st.type === 'trace') {
           var dd = d.querySelector('#result .dist');
           if (dd && dd.textContent !== '?') err(p + ' ket qua lo ra som o step ' + s);
+          // Dap an cung khong duoc lo qua khung giai thich (loi nay tung lot qua kiem tra chi nhin #result)
+          var exTxt = d.getElementById('explain').textContent;
+          if (/kết quả\s*:/.test(exTxt)) err(p + ' step ' + s + ' khung giai thich lo dap an: ' + exTxt.slice(0, 80));
         }
       }
     });
